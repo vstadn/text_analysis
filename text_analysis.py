@@ -62,19 +62,6 @@ def histogram(max_stars_possible, max_count, count):
     number_of_stars = int((count * max_stars_possible)/max_count)
     return number_of_stars * "*"
 
-# This function is used to generate histogram bars for top 10 most common words in a given text.
-# It stores those top 10 values in an appropriate order in a list and returns it at the end.
-# This function is used for algorithm 2.
-def histogram_list(max_stars_possible, max_count, dictionary):
-    counter = 0
-    top_stars = []
-    for count in dictionary.values():
-        top_stars.append(int((count * max_stars_possible)/max_count) * "*")
-        counter += 1
-        if counter == 10:
-            break
-    return top_stars
-
 # This function prints 10 most common words along with their counts and histogram bars.
 # It uses function histogram() within itself. This function is used for algorithm 1.
 def output_print(max_stars_possible,max_count):
@@ -84,18 +71,6 @@ def output_print(max_stars_possible,max_count):
         number_of_stars = histogram(max_stars_possible,max_count,count)
         indent = '{:<' + str(max_word_length)+ '}' + "  " + '{:>' + str(max_count_length) + '}' + " " + '{:<' + str(max_stars_possible) + '}';
         print(indent.format(word, count, number_of_stars))
-        counter += 1
-        if counter == 10:
-            break
-
-# This function prints 10 most common words along with their counts and histogram bars.
-# It uses function histogram_list() within itself. This function is used for algorithm 2.
-def output_print_list(max_stars_possible,max_count,star_count):
-    print("Most  Frequent")
-    counter = 0
-    for word, count in words_list.items():
-        indent = '{:<' + str(max_word_length)+ '}' + "  " + '{:>' + str(max_count_length) + '}' + " " + '{:<' + str(max_stars_possible) + '}';
-        print(indent.format(word, count, star_count[counter]))
         counter += 1
         if counter == 10:
             break
@@ -115,7 +90,6 @@ def parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", type=str, help="Input file that needs to be analyzed(required).", required=True)
     parser.add_argument("-s", "--stopwords", type=str, help="File with the list of stop words(optional).", required=False)
-    parser.add_argument("-a", "--algorithm", type=int,
     help="Choose preferred algorithm. 1 - for slower approach. Any other value/blank/no argument for faster approach.",required=False)
     parser.add_argument("-u", "--url", type=str, help="URL or not", required=False)
     parser.add_argument("-p", "--plot", type=str, help="yes if you want to plot it", required=False)
@@ -164,22 +138,12 @@ if __name__ == "__main__":
     max_count_length = len(str(max_count))
     max_stars_possible = line_length - max_word_length - max_count_length - reserved_space
 
-    # 1 algorithm -> calculate all the star values and store them in the list.
-    # Then retrieve each of them individually from the list.
-    if args.algorithm == 1:
-        start_time = timer()
-        top_stars = histogram_list(max_stars_possible, max_count, words_list)
-        output_print_list(max_stars_possible,max_count,top_stars)
-        stop_time = timer()
-        elapsed_time = stop_time - start_time
-        print(str(elapsed_time) + "s took for creating list of histogram bars and then retrieving them.")
-    # 2 algorithm -> calculate histogram bars individually one at a time in a printout function.
-    else:
-        start_time = timer()
-        output_print(max_stars_possible,max_count)
-        stop_time = timer()
-        elapsed_time = stop_time - start_time
-        print(str(elapsed_time) + "s  took for calculating individual histogram bars one at a time.")
+    start_time = timer()
+    output_print(max_stars_possible,max_count)
+    stop_time = timer()
+    elapsed_time = stop_time - start_time
+    print(str(elapsed_time) + "s  took for calculating individual histogram bars one at a time.")
+    
     if args.plot == "yes":
         plot(words_list)
 
