@@ -90,7 +90,6 @@ def parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", type=str, help="Input file that needs to be analyzed(required).", required=True)
     parser.add_argument("-s", "--stopwords", type=str, help="File with the list of stop words(optional).", required=False)
-    help="Choose preferred algorithm. 1 - for slower approach. Any other value/blank/no argument for faster approach.",required=False)
     parser.add_argument("-u", "--url", type=str, help="URL or not", required=False)
     parser.add_argument("-p", "--plot", type=str, help="yes if you want to plot it", required=False)
     return parser.parse_args()
